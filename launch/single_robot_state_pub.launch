@@ -1,0 +1,17 @@
+<launch>
+  <!-- No namespace here as we will share this description.
+       Access with slash at the beginning -->
+
+  <param name="robot_description"
+    command="$(find xacro)/xacro.py $(find lan_nav)/robots/kobuki_hexagons_hokuyo.xml" />
+
+  <group ns="robot1">
+    <param name="tf_prefix" value="robot1_tf" />
+    <node name="spawn_minibot_model" pkg="gazebo_ros" type="spawn_model"
+     args="-urdf -file $(find lan_nav)/robots/kobuki_hexagons_hokuyo.xml -x -1 -y 0 -z 0 -model robot1"
+     respawn="false" output="screen" />
+
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" output="screen"/> 
+  </group>
+
+</launch>     

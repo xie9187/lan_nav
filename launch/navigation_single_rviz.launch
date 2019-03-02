@@ -1,0 +1,21 @@
+<launch>
+  <param name="/use_sim_time" value="true"/>
+
+  <group ns="robot1">
+    <param name="tf_prefix" value="robot1_tf" />
+    <param name="amcl/initial_pose_x" value="0" />
+    <param name="amcl/initial_pose_y" value="0" />
+    <include file="$(find lan_nav)/launch/move_base.launch"/>
+
+    <node pkg="gmapping" type="slam_gmapping" name="gmapping_thing" output="screen" >
+      <remap from="scan" to="/mybot/laser/scan" />
+      <param name="odom_frame" value="robot1_tf/odom" />
+      <param name="base_frame" value="robot1_tf/base_link" />
+    </node>
+    
+    <node pkg="rviz" type="rviz" name="rviz" args="-d $(find lan_nav)/config/navigation.rviz" output="screen"/>
+  </group>
+
+  
+
+</launch>

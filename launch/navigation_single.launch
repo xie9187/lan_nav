@@ -1,0 +1,21 @@
+<launch>
+  <param name="/use_sim_time" value="true"/>
+
+  <!-- Run the map server -->
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find lan_nav)/config/map.yaml" >
+    <param name="frame_id" value="/map" />
+  </node>
+
+  <group ns="robot1">
+    <param name="tf_prefix" value="robot1_tf" />
+    <param name="amcl/initial_pose_x" value="0" />
+    <param name="amcl/initial_pose_y" value="0" />
+    <include file="$(find lan_nav)/launch/move_base.launch"/>
+
+    <node pkg="fake_localization" type="fake_localization" name="fake_localization" respawn="false" output="screen">
+      <param name="odom_frame_id" value="robot1_tf/odom" />
+      <param name="base_frame_id" value="robot1_tf/base_link" />
+    </node>
+  </group>
+
+</launch>

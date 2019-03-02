@@ -1,0 +1,21 @@
+<launch>
+  <!-- start world -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find lan_nav)/world/room4x4_simple.world"/>
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="true"/>
+    <arg name="recording" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- include our robots -->
+  <param name="robot_description"
+    command="$(find xacro)/xacro.py $(find lan_nav)/robots/kobuki_hexagons_hokuyo.xml" />
+  <node name="spawn_minibot_model" pkg="gazebo_ros" type="spawn_model"
+   args="-urdf -file $(find lan_nav)/robots/kobuki_hexagons_hokuyo_sparse.xml -x 3 -y 3 -z 0 -model robot1"
+   respawn="false" output="screen" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen"/>
+</launch>
